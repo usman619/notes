@@ -1,8 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/constants/routes.dart';
-import 'package:notes/firebase_options.dart';
+import 'package:notes/services/auth/auth_exceptions.dart';
+import 'package:notes/services/auth/auth_service.dart';
 import 'package:notes/utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -37,110 +36,94 @@ class _LoginViewState extends State<LoginView> {
           title: const Text('Login', style: TextStyle(color: Colors.white)),
           backgroundColor: Colors.purple,
         ),
-        body: FutureBuilder(
-          future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform,
-          ),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.done:
-                return Column(
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextField(
-                      controller: _emailController,
-                      enableSuggestions: false,
-                      autocorrect: false,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Email',
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      autocorrect: false,
-                      enableSuggestions: false,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Password',
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        final email = _emailController.text;
-                        final password = _passwordController.text;
+        body: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            TextField(
+              controller: _emailController,
+              enableSuggestions: false,
+              autocorrect: false,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Email',
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextField(
+              controller: _passwordController,
+              obscureText: true,
+              autocorrect: false,
+              enableSuggestions: false,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Password',
+              ),
+            ),
+            TextButton(
+              onPressed: () async {
+                final email = _emailController.text;
+                final password = _passwordController.text;
 
-                        try {
-                          await FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                            email: email,
-                            password: password,
-                          );
+                try {
+                  await AuthService.firebase().logIn(
+                    email: email,
+                    password: password,
+                  );
 
-                          final user = FirebaseAuth.instance.currentUser;
+                  final user = AuthService.firebase().currentUser;
 
-                          if (user?.emailVerified ?? false) {
-                            // user's email is verified
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                              notesRoute,
-                              (route) => false,
-                            );
-                          } else {
-                            // user's email is not verified
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                              verifyEmailRoute,
-                              (route) => false,
-                            );
-                          }
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'user-not-found') {
-                            await showErrorDialog(
-                              context,
-                              'User not found.',
-                            );
-                          } else if (e.code == 'invalid-credential') {
-                            await showErrorDialog(
-                              context,
-                              'Invalid Credential.',
-                            );
-                          } else {
-                            await showErrorDialog(
-                              context,
-                              'Error: ${e.code}',
-                            );
-                          }
-                        } catch (e) {
-                          await showErrorDialog(
-                            context,
-                            e.toString(),
-                          );
-                        }
-                      },
-                      child: const Text('Login'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          registerRoute,
-                          (route) => false,
-                        );
-                      },
-                      child: const Text('Register User'),
-                    ),
-                  ],
+                  if (user?.isEmailVerified ?? false) {
+                    // user's email is verified
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      notesRoute,
+                      (route) => false,
+                    );
+                  } else {
+                    // user's email is not verified
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      verifyEmailRoute,
+                      (route) => false,
+                    );
+                  }
+                } on UserNotLoggedInAuthException {
+                  await showErrorDialog(
+                    context,
+                    'User not found.',
+                  );
+                } on WrongPasswordException {
+                  await showErrorDialog(
+                    context,
+                    'Wrong Password.',
+                  );
+                } on InvalidCredentialException {
+                  await showErrorDialog(
+                    context,
+                    'Invalid Credential.',
+                  );
+                } on GenericException {
+                  await showErrorDialog(
+                    context,
+                    'Authentication Error. Please try again.',
+                  );
+                }
+              },
+              child: const Text('Login'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  registerRoute,
+                  (route) => false,
                 );
-
-              default:
-                return const Center(child: CircularProgressIndicator());
-            }
-          },
+              },
+              child: const Text('Register User'),
+            ),
+          ],
         ));
   }
 }
