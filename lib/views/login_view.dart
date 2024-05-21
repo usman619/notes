@@ -3,8 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:notes/constants/routes.dart';
 import 'package:notes/firebase_options.dart';
-import 'dart:developer' as devtools show log;
-
 import 'package:notes/utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -80,28 +78,37 @@ class _LoginViewState extends State<LoginView> {
                         final password = _passwordController.text;
 
                         try {
-                          final userCredential = await FirebaseAuth.instance
+                          await FirebaseAuth.instance
                               .signInWithEmailAndPassword(
                             email: email,
                             password: password,
                           );
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            notesRoute,
-                            (route) => false,
-                          );
 
-                          devtools.log(userCredential.toString());
+                          final user = FirebaseAuth.instance.currentUser;
+
+                          if (user?.emailVerified ?? false) {
+                            // user's email is verified
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              notesRoute,
+                              (route) => false,
+                            );
+                          } else {
+                            // user's email is not verified
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              verifyEmailRoute,
+                              (route) => false,
+                            );
+                          }
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'user-not-found') {
                             await showErrorDialog(
                               context,
                               'User not found.',
                             );
-                            devtools.log('User Not Found.');
                           } else if (e.code == 'invalid-credential') {
                             await showErrorDialog(
                               context,
-                              'Wrong password.',
+                              'Invalid Credential.',
                             );
                           } else {
                             await showErrorDialog(
