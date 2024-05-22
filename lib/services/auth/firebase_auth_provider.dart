@@ -11,7 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart'
 
 class FirebaseAuthProvider implements AuthProvider {
   @override
-  Future<void> intialize() async {
+  Future<void> initialize() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
@@ -78,9 +78,9 @@ class FirebaseAuthProvider implements AuthProvider {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        throw UserNotFoundException();
+        throw UserNotFoundAuthException();
       } else if (e.code == 'wrong-password') {
-        throw WrongPasswordException();
+        throw WrongPasswordAuthException();
       } else if (e.code == 'invalid-credential') {
         throw InvalidCredentialException();
       } else {

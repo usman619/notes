@@ -1,7 +1,7 @@
 // Login Exceptions
-class UserNotFoundException implements Exception {}
+class UserNotFoundAuthException implements Exception {}
 
-class WrongPasswordException implements Exception {}
+class WrongPasswordAuthException implements Exception {}
 
 class InvalidCredentialException implements Exception {}
 
