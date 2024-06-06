@@ -34,6 +34,7 @@ void main() {
   ));
 }
 
+//Using BLOC to manage the state of the application
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
