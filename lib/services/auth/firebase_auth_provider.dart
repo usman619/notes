@@ -1,13 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:notes/firebase_options.dart';
-import 'package:notes/services/auth/auth_provider.dart';
 import 'package:notes/services/auth/auth_user.dart';
+import 'package:notes/services/auth/auth_provider.dart';
 import 'package:notes/services/auth/auth_exceptions.dart';
-
-import 'dart:developer' as devtools show log;
 
 import 'package:firebase_auth/firebase_auth.dart'
     show FirebaseAuth, FirebaseAuthException;
+
+// import 'dart:developer' as devtools show log;
 
 class FirebaseAuthProvider implements AuthProvider {
   @override
@@ -35,17 +35,16 @@ class FirebaseAuthProvider implements AuthProvider {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        throw WeakPasswordException();
+        throw WeakPasswordAuthException();
       } else if (e.code == 'email-already-in-use') {
-        devtools.log('Email already in use');
-        throw EmailAlreadyInUseException();
+        throw EmailAlreadyInUseAuthException();
       } else if (e.code == 'invalid-email') {
-        throw InvalidEmailException();
+        throw InvalidEmailAuthException();
       } else {
-        throw GenericException();
+        throw GenericAuthException();
       }
     } catch (_) {
-      throw GenericException();
+      throw GenericAuthException();
     }
   }
 
@@ -69,7 +68,6 @@ class FirebaseAuthProvider implements AuthProvider {
         email: email,
         password: password,
       );
-
       final user = currentUser;
       if (user != null) {
         return user;
@@ -81,20 +79,19 @@ class FirebaseAuthProvider implements AuthProvider {
         throw UserNotFoundAuthException();
       } else if (e.code == 'wrong-password') {
         throw WrongPasswordAuthException();
-      } else if (e.code == 'invalid-credential') {
-        throw InvalidCredentialException();
       } else {
-        throw GenericException();
+        // devtools.log('Exception: ${e.code}');
+        throw GenericAuthException();
       }
-    } catch (_) {
-      throw GenericException();
+    } catch (e) {
+      // devtools.log('Exception: ${e.toString()}');
+      throw GenericAuthException();
     }
   }
 
   @override
   Future<void> logOut() async {
     final user = FirebaseAuth.instance.currentUser;
-
     if (user != null) {
       await FirebaseAuth.instance.signOut();
     } else {
@@ -105,7 +102,6 @@ class FirebaseAuthProvider implements AuthProvider {
   @override
   Future<void> sendEmailVerification() async {
     final user = FirebaseAuth.instance.currentUser;
-
     if (user != null) {
       await user.sendEmailVerification();
     } else {

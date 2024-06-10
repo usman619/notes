@@ -6,13 +6,20 @@ class WrongPasswordAuthException implements Exception {}
 class InvalidCredentialException implements Exception {}
 
 // Register Exceptions
-class EmailAlreadyInUseException implements Exception {}
+class EmailAlreadyInUseAuthException implements Exception {}
 
-class WeakPasswordException implements Exception {}
+class WeakPasswordAuthException implements Exception {}
 
-class InvalidEmailException implements Exception {}
+class InvalidEmailAuthException implements Exception {}
 
 // Generic Exceptions
-class GenericException implements Exception {}
+class GenericAuthException implements Exception {
+  // final String message;
+
+  // GenericAuthException(this.message);
+  // void printMessage() {
+  //   print(message);
+  // }
+}
 
 class UserNotLoggedInAuthException implements Exception {}

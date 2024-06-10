@@ -77,39 +77,33 @@ class _NotesViewState extends State<NotesView> {
         ],
       ),
       body: StreamBuilder(
-          stream: _notesService.allNotes(ownerUserId: userId),
-          builder: ((context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-              case ConnectionState.active:
-                if (snapshot.hasData) {
-                  final allNotes = snapshot.data as Iterable<CloudNote>;
-                  print(allNotes);
-                  return NotesListView(
-                    notes: allNotes,
-                    onDeleteNote: (note) async {
-                      await _notesService.deleteNote(
-                          documentId: note.documentId);
-                    },
-                    onTap: (note) {
-                      Navigator.of(context).pushNamed(
-                        createOrUpdateNoteRoute,
-                        arguments: note,
-                      );
-                    },
-                  );
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-
-              default:
-                return Center(
-                  child: CircularProgressIndicator(),
+        stream: _notesService.allNotes(ownerUserId: userId),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+            case ConnectionState.active:
+              if (snapshot.hasData) {
+                final allNotes = snapshot.data as Iterable<CloudNote>;
+                return NotesListView(
+                  notes: allNotes,
+                  onDeleteNote: (note) async {
+                    await _notesService.deleteNote(documentId: note.documentId);
+                  },
+                  onTap: (note) {
+                    Navigator.of(context).pushNamed(
+                      createOrUpdateNoteRoute,
+                      arguments: note,
+                    );
+                  },
                 );
-            }
-          })),
+              } else {
+                return const CircularProgressIndicator();
+              }
+            default:
+              return const CircularProgressIndicator();
+          }
+        },
+      ),
     );
   }
 }

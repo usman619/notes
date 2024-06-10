@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notes/utilities/dialogs/generic_dialog.dart';
 
-Future<void> CannotShareEmptyNoteDialog(BuildContext context) async {
+Future<void> cannotShareEmptyNoteDialog(BuildContext context) async {
   return showGenericDialog(
     context: context,
     title: 'Sharing',
