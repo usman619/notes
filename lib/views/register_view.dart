@@ -65,54 +65,64 @@ class _RegisterViewState extends State<RegisterView> {
                 const Text('Register', style: TextStyle(color: Colors.white)),
             backgroundColor: Colors.purple,
           ),
-          body: Column(
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              TextField(
-                controller: _emailController,
-                enableSuggestions: false,
-                autocorrect: false,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Email',
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                const Text(
+                  'Register a new Account',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                autocorrect: false,
-                enableSuggestions: false,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
+                const SizedBox(
+                  height: 25,
                 ),
-              ),
-              TextButton(
-                onPressed: () async {
-                  final email = _emailController.text;
-                  final password = _passwordController.text;
+                TextField(
+                  controller: _emailController,
+                  enableSuggestions: false,
+                  autocorrect: false,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Email',
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  autocorrect: false,
+                  enableSuggestions: false,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    final email = _emailController.text;
+                    final password = _passwordController.text;
 
-                  context.read<AuthBloc>().add(AuthEventRegister(
-                        email,
-                        password,
-                      ));
-                },
-                child: const Text('Register'),
-              ),
-              TextButton(
-                  onPressed: () {
-                    context.read<AuthBloc>().add(
-                          const AuthEventLogOut(),
-                        );
+                    context.read<AuthBloc>().add(AuthEventRegister(
+                          email,
+                          password,
+                        ));
                   },
-                  child: const Text('Already Registered? Login here!')),
-            ],
+                  child: const Text('Register'),
+                ),
+                TextButton(
+                    onPressed: () {
+                      context.read<AuthBloc>().add(
+                            const AuthEventLogOut(),
+                          );
+                    },
+                    child: const Text('Already Registered? Login here!')),
+              ],
+            ),
           )),
     );
   }
