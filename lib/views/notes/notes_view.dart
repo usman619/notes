@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
 import 'package:notes/constants/routes.dart';
 import 'package:notes/enum/menu_action.dart';
+import 'package:notes/extensions/buildcontext/loc.dart';
 //import 'dart:developer' as devtools show log;
 
 import 'package:notes/services/auth/auth_service.dart';
@@ -10,6 +11,10 @@ import 'package:notes/services/auth/bloc/auth_event.dart';
 import 'package:notes/services/cloud/cloud_note.dart';
 import 'package:notes/services/cloud/firebase_cloud_storage.dart';
 import 'package:notes/views/notes/notes_list_view.dart';
+
+extension Count<T extends Iterable> on Stream<T> {
+  Stream<int> get getLength => map((event) => event.length);
+}
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
@@ -38,7 +43,18 @@ class _NotesViewState extends State<NotesView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Notes', style: TextStyle(color: Colors.white)),
+        title: StreamBuilder<Object>(
+            stream: _notesService.allNotes(ownerUserId: userId).getLength,
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                final noteCount = snapshot.data ?? 0;
+                final text = context.loc.notes_title(noteCount);
+                return Text(text, style: const TextStyle(color: Colors.white));
+              } else {
+                return const Text('', style: TextStyle(color: Colors.white));
+              }
+              // return Container(); // Add a return statement at the end
+            }),
         backgroundColor: Colors.purple,
         actions: [
           IconButton(
@@ -65,10 +81,10 @@ class _NotesViewState extends State<NotesView> {
               }
             },
             itemBuilder: (context) {
-              return const [
+              return [
                 PopupMenuItem(
                   value: MenuAction.logout,
-                  child: Text('Logout'),
+                  child: Text(context.loc.logout_button),
                 ),
               ];
             },

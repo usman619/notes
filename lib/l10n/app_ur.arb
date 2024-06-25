@@ -1,0 +1,62 @@
+{
+    "@@locale": "ur",
+    "logout_button": "لاگ آؤٹ",
+    "note": "نوٹ",
+    "cancel": "منسوخ کریں",
+    "yes": "جی ہاں",
+    "delete": "حذف کریں",
+    "sharing": "شئیرنگ",
+    "ok": "ٹھیک ہے",
+    "login": "لاگ ان",
+    "verify_email": "ای میل کی تصدیق کریں",
+    "register": "رجسٹر کریں",
+    "restart": "دوبارہ شروع کریں",
+
+    "start_typing_your_note": "اپنا نوٹ ٹائپ کرنا شروع کریں",
+    "delete_note_prompt": "کیا آپ واقعی اس نوٹ کو حذف کرنا چاہتے ہیں؟",
+    "cannot_share_empty_note_prompt": "خالی نوٹ کو شئیر نہیں کیا جا سکتا!",
+    "generic_error_prompt": "ایک خرابی پیش آگئی ہے",
+    "logout_dialog_prompt": "کیا آپ واقعی لاگ آؤٹ کرنا چاہتے ہیں؟",
+
+    "password_reset": "پاس ورڈ ری سیٹ",
+    "password_reset_dialog_prompt": "ہم نے آپ کو پاس ورڈ ری سیٹ لنک بھیج دیا ہے۔ مزید معلومات کے لئے براہ کرم اپنی ای میل چیک کریں۔",
+
+    "login_error_cannot_find_user": "داخل کی گئی اسناد کے ساتھ کوئی صارف نہیں ملا!",
+    "login_error_wrong_credentials": "غلط اسناد",
+    "login_error_auth_error": "تصدیق میں خرابی",
+    "login_error_invalid_credintials": "غلط اسناد",
+
+    "login_view_prompt": "اپنے نوٹس دیکھنے کے لئے اپنا ای میل اور پاس ورڈ درج کریں!",
+    
+    "login_view_forgot_password": "میں اپنا پاس ورڈ بھول گیا ہوں",
+    "login_view_not_registered_yet": "ابھی تک رجسٹر نہیں ہوا؟ یہاں رجسٹر کریں!",
+
+    "email_text_field_placeholder": "اپنا ای میل یہاں درج کریں",
+    "password_text_field_placeholder": "اپنا پاس ورڈ یہاں درج کریں",
+    
+    "forgot_password": "پاس ورڈ بھول گئے",
+    "forgot_password_view_generic_error": "ہم آپ کی درخواست پر عمل نہیں کر سکے۔ براہ کرم یقینی بنائیں کہ آپ ایک رجسٹرڈ صارف ہیں، یا اگر نہیں، تو اب ایک صارف رجسٹر کریں۔",
+    "forgot_password_view_prompt": "اگر آپ اپنا پاس ورڈ بھول گئے ہیں، تو صرف اپنا ای میل درج کریں اور ہم آپ کو پاس ورڈ ری سیٹ لنک بھیج دیں گے۔",
+    "forgot_password_view_send_me_link": "مجھے پاس ورڈ ری سیٹ لنک بھیجیں",
+    "forgot_password_view_back_to_login": "لاگ ان صفحے پر واپس جائیں",
+
+    "register_error_weak_password": "یہ پاس ورڈ کافی محفوظ نہیں ہے۔ براہ کرم کوئی اور پاس ورڈ منتخب کریں!",
+    "register_error_email_already_in_use": "یہ ای میل پہلے ہی کسی اور صارف کے ساتھ رجسٹر ہے۔ براہ کرم کوئی اور ای میل منتخب کریں!",
+    "register_error_generic": "رجسٹر کرنے میں ناکام رہا۔ براہ کرم بعد میں دوبارہ کوشش کریں!",
+    "register_error_invalid_email": "آپ نے جو ای میل پتہ درج کیا ہے وہ غلط معلوم ہوتا ہے۔ براہ کرم کوئی اور ای میل پتہ درج کریں!",
+    "register_view_prompt": "رجسٹر کرنے کے لئے اپنا ای میل اور پاس ورڈ درج کریں!",
+    "register_view_already_registered": "پہلے سے رجسٹر ہے؟ یہاں لاگ ان کریں!",
+
+    "verify_email_view_prompt": "ہم نے آپ کے اکاؤنٹ کی تصدیق کے لیے آپ کو ایک ای میل بھیجا ہے۔",
+    "verify_email_send_email_verification": "ای میل تصدیق بھیجیں",
+
+    "notes_title": "{count, plural, =0{ابھی تک کوئی نوٹ نہیں} =1{1 نوٹ} other{{count} نوٹس}}",
+    "@notes_title": {
+        "placeholders": {
+            "count": {
+                "type": "int",
+                "example": "3 نوٹس"
+            }
+        }
+    }
+}

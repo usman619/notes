@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:notes/extensions/buildcontext/loc.dart';
 import 'package:notes/services/auth/auth_exceptions.dart';
 import 'package:notes/services/auth/bloc/auth_bloc.dart';
 import 'package:notes/services/auth/bloc/auth_event.dart';
@@ -39,103 +40,107 @@ class _LoginViewState extends State<LoginView> {
           if (state.exception is UserNotFoundAuthException) {
             await showErrorDialog(
               context,
-              'User not found.',
+              context.loc.login_error_cannot_find_user,
             );
           } else if (state.exception is WrongPasswordAuthException) {
             await showErrorDialog(
               context,
-              'Wrong Credentials.',
+              context.loc.login_error_wrong_credentials,
             );
           } else if (state.exception is InvalidCredentialException) {
             await showErrorDialog(
               context,
-              'Invalid Credential.',
+              context.loc.login_error_invalid_credintials,
             );
           } else if (state.exception is GenericAuthException) {
             await showErrorDialog(
               context,
-              'Authentication Error. Please try again.',
+              context.loc.login_error_auth_error,
             );
           }
         }
       },
       child: Scaffold(
           appBar: AppBar(
-            title: const Text('Login', style: TextStyle(color: Colors.white)),
+            title: Text(context.loc.login,
+                style: const TextStyle(color: Colors.white)),
             backgroundColor: Colors.purple,
           ),
           body: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Login to your Account.',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    context.loc.login_view_prompt,
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                TextField(
-                  controller: _emailController,
-                  enableSuggestions: false,
-                  autocorrect: false,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
+                  const SizedBox(
+                    height: 25,
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                TextField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  autocorrect: false,
-                  enableSuggestions: false,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
+                  TextField(
+                    controller: _emailController,
+                    enableSuggestions: false,
+                    autocorrect: false,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: context.loc.email_text_field_placeholder,
+                    ),
                   ),
-                ),
-                Center(
-                  child: Column(
-                    children: [
-                      TextButton(
-                        onPressed: () async {
-                          final email = _emailController.text;
-                          final password = _passwordController.text;
-                          context.read<AuthBloc>().add(AuthEventLogIn(
-                                email,
-                                password,
-                              ));
-                        },
-                        child: const Text('Login'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          context.read<AuthBloc>().add(
-                                const AuthEventForgotPassword(),
-                              );
-                        },
-                        child: const Text('Forgot Password?'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          context.read<AuthBloc>().add(
-                                const AuthEventShouldRegister(),
-                              );
-                        },
-                        child: const Text('Register User'),
-                      ),
-                    ],
+                  const SizedBox(
+                    height: 20,
                   ),
-                ),
-              ],
+                  TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    autocorrect: false,
+                    enableSuggestions: false,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(),
+                      labelText: context.loc.password_text_field_placeholder,
+                    ),
+                  ),
+                  Center(
+                    child: Column(
+                      children: [
+                        TextButton(
+                          onPressed: () async {
+                            final email = _emailController.text;
+                            final password = _passwordController.text;
+                            context.read<AuthBloc>().add(AuthEventLogIn(
+                                  email,
+                                  password,
+                                ));
+                          },
+                          child: Text(context.loc.login),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            context.read<AuthBloc>().add(
+                                  const AuthEventForgotPassword(),
+                                );
+                          },
+                          child: Text(context.loc.login_view_forgot_password),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            context.read<AuthBloc>().add(
+                                  const AuthEventShouldRegister(),
+                                );
+                          },
+                          child:
+                              Text(context.loc.login_view_not_registered_yet),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           )),
     );
